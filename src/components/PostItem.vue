@@ -1,16 +1,11 @@
 <template>
   <div class="post">
-
-
-
-
-
     <div class="header__delete_post" >
       <div class="header__img-title" >
         <div class="header__img" ><img src="../img/buildHomeAvatar.svg" alt=""></div>
         <div class="header__title">Строительство частных домов</div>
       </div>
-      <div>
+      <div class="button__delete-post" >
         <button
             class="header__delete"
             @click="$emit('remove',post)"
@@ -19,18 +14,14 @@
         </button>
       </div>
     </div>
-
-
-
-
     <div>
       <div :class="className">
-        <div ref="myReference">{{ post.body }}</div>
+        <div class="body__text" ref="myReference">{{ post.body }}</div>
       </div>
-      <div v-if="showButtonMoreInfo && !showMoreInfo">
+      <div class="button__more-info"  v-if="showButtonMoreInfo && !showMoreInfo">
         <button class="show__more_info" @click="getMoreInfo">Показать еще...</button>
       </div>
-      <div v-else-if="showButtonMoreInfo && showMoreInfo">
+      <div class="button__more-info"  v-else-if="showButtonMoreInfo && showMoreInfo">
         <button class="show__more_info" @click="getMoreInfo">Скрыть</button>
       </div>
     </div>
@@ -90,6 +81,7 @@ export default {
 
 <style scoped>
 .header__delete{
+  background: #FFFFFF;
   border: none;
   color: #C1C3CA;
   font-weight: 400;
@@ -98,6 +90,7 @@ export default {
 
 }
 .header__title{
+  background: #FFFFFF;
   margin: 10px 0 0 0;
   font-style: normal;
   font-weight: 500;
@@ -106,9 +99,11 @@ export default {
   color: #18191F;
 }
 .header__img-title{
+  background: #FFFFFF;
   display: flex;
 }
 .header__img{
+
   margin: 0 20px 24px 0;
 }
 .header__img img{
@@ -124,9 +119,11 @@ export default {
   line-height: 23px;
   color: #43A5D2;
   border:none;
+  background: #FFFFFF;
 }
 .header__delete_post{
   display: flex;
+  background: #FFFFFF;
   justify-content: space-between;
 }
 .post {
@@ -141,6 +138,7 @@ export default {
   align-self: center;
   justify-content: space-between;
   flex-direction: column;
+  background: #FFFFFF;
 }
 .post__body {
 
@@ -157,6 +155,7 @@ export default {
   font-size: 15px;
   line-height: 24px;
   color: #18191F;
+  background: #FFFFFF;
 }
 .post__body_full-content {
   word-wrap: break-word;
@@ -166,5 +165,13 @@ export default {
   font-size: 15px;
   line-height: 24px;
   color: #18191F;
+  background: #FFFFFF;
 }
+
+.button__delete-post,
+.button__more-info,
+.body__text{
+  background: #FFFFFF;
+}
+
 </style>

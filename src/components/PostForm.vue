@@ -1,56 +1,77 @@
 <template>
-  <form @submit.prevent>
+  <form @click="focusField" @submit.prevent>
     <div class="textarea__container">
-      <div class="textarea__img">
-        <img src="../img/buildHomeAvatar.svg" alt="">
+      <div class="header__textarea">
+        <div class="textarea__img">
+          <img src="../img/buildHomeAvatar.svg" alt="">
+        </div>
+        <textarea
+            v-model="post.body"
+            class="textArea"
+            @input="lenghtCalc"
+            type="text"
+            :style="textareaStyle"
+            placeholder="Создайте новый пост"
+            :maxlength='maxlength'
+        />
       </div>
-      <textarea
-          v-model="post.body"
-          class="textArea"
-          @input="lenghtCalc"
-          type="text"
-          placeholder="Создайте новый пост"
-      />
+      <div class="counter__simbol">{{ counterSumbol }}</div>
+      <div class="control__panel" v-if="showPanel">
+        <button
+            class="btn"
+            @click="createPost"
+        >
+          Опубликовать
+        </button>
+      </div>
     </div>
-    <button
-        class="btn"
-        @click="createPost"
-    >
-      Создать
-    </button>
   </form>
-  <div>Осталось {{counterSumbol}}</div>
 </template>
 
 <script>
 export default {
+  props:{
+    showPanel:{
+      type: Boolean,
+      required: true,
+    }
+  },
+  inheritAttrs: false,
   data() {
     return {
       post: {
         body: '',
       },
-      counterSumbol:0,
-      lastText:''
+      counterSumbol: 1000,
+      maxlength: 1000,
+      textareaHeight: 59,
+    }
+  },
+  computed: {
+    textareaStyle() {
+      return {
+        height: `${this.textareaHeight}px`
+      }
     }
   },
   methods: {
+    focusField() {
+      this.$emit('showControlPanel', true)
+    },
+
     createPost() {
       this.post.id = Date.now()
       this.$emit('create', this.post)
       this.post = {
         body: '',
       }
+      this.textareaHeight = 59
+      this.$emit('closeControlPanel', false)
     },
     lenghtCalc(e) {
-      if(this.counterSumbol === 1){
-        this.lastText = e.target.value
-        this.body = this.lastText
-      }
-      if(this.counterSumbol < 0){
-        this.body = this.lastText
-      }
       computed: {
-        this.counterSumbol = 5 -  e.target.value.length
+        this.textareaHeight = e.target.scrollHeight
+        this.counterSumbol = 1000 - e.target.value.length
       }
     }
   },
@@ -59,6 +80,38 @@ export default {
 </script>
 
 <style scoped>
+.counter__simbol {
+  justify-content: flex-end;
+  padding: 0 20px 7px 0;
+  display: flex;
+  align-items: flex-end;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 14px;
+  color: #94A2B3;
+  background: #FFFFFF;
+}
+
+.header__textarea {
+  min-height: 80px;
+  display: flex;
+  background: #FFFFFF;
+  border-radius: 16px;
+}
+
+.control__panel {
+  height: 70px;
+  max-width: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 0 20px 0 20px;
+  border-radius: 0 0 16px 16px;
+  background: #FFFFFF;
+  border-top: 1px solid #E8E6E6;
+}
+
 form {
   max-width: 900px;
   margin: 0 auto;
@@ -70,9 +123,10 @@ form {
 .textarea__container {
   display: flex;
   box-shadow: 0px 0px 12px rgba(83, 83, 89, 0.12);
-  border-radius: 16px;
   border: 1px solid #E8E6E6;
   background: #FFFFFF;
+  flex-direction: column;
+  border-radius: 16px;
 }
 
 .textArea {
@@ -82,14 +136,18 @@ form {
   font-size: 15px;
   line-height: 24px;
   color: #C1C3CA;
-  max-width: 758px;
+  max-width: 768px;
   width: 100%;
   border: none;
-  border-radius: 16px;
-  height: 80px;
+  min-height: 59px;
   background: #FFFFFF;
-  padding: 0 20px 0 20px;
+  padding: 20px 20px 0px 20px;
+  max-height: 216px;
+  height: auto;
+}
 
+.textArea::-webkit-scrollbar {
+  width: 0;
 }
 
 .textArea:focus {
@@ -99,26 +157,29 @@ form {
   font-size: 15px;
   line-height: 24px;
   width: 100%;
-  border-radius: 16px;
-  height: 80px;
+  min-height: 80px;
   background: #FFFFFF;
   outline: none;
 }
 
 .btn {
-  align-self: flex-end;
-  margin-top: 15px;
-  padding: 10px 15px;
-  background: none;
-  color: teal;
-  border: 1px solid teal;
+  border: none;
+  background: #43A5D2;
+  border-radius: 10px;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 20px;
+  color: #FFFFFF;
+  max-width: 147px;
+  width: 100%;
+  max-height: 40px;
+  height: 100%;
 }
 
 .textarea__img {
-  display: flex;
-  align-items: center;
   max-height: 100%;
-  margin: 0 20px 0 20px;
+  margin: 20px 20px 0 20px;
   background: #FFFFFF;
 }
 

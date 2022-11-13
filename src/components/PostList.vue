@@ -1,8 +1,7 @@
 <template>
   <div v-if="posts.length > 0" class="postList">
-    <h3>Список постов</h3>
     <post-item
-        v-for="post in posts"
+        v-for="post in posts.slice().reverse()"
         :post="post"
         :key="post.id"
         @remove="$emit('remove',post)"
@@ -26,6 +25,7 @@ export default {
 
 <style scoped>
 .postList{
+
   padding: 0 0 25px 0;
   margin: 0 auto;
   max-width: 900px;
